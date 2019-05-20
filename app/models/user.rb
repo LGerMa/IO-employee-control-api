@@ -6,7 +6,8 @@ class User < ApplicationRecord
   has_many :labor_times
   has_many :tokens, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
   has_one :current_token, -> { order 'created_at DESC' }, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
-  require 'pry'
+
+  enum role: {user: 0, admin: 1}
   class << self
     def authenticate!(email, password)
       user = User.find_for_authentication(email: email)

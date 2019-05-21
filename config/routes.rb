@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
+      resources :labor_times
     end
   end
 end

@@ -8,6 +8,16 @@ class User < ApplicationRecord
   has_one :current_token, -> { order 'created_at DESC' }, class_name: 'Doorkeeper::AccessToken', foreign_key: :resource_owner_id
 
   enum role: {user: 0, admin: 1}
+
+  def get_pending_labor_time
+    pending_labor_times = labor_times.where(end_date: nil).order(start_date: :desc)
+    pending_labor_times.nil? ? nil : pending_labor_times.first
+  end
+
+  def got_pending_labor_time?
+    !self.get_pending_labor_time.nil?
+  end
+
   class << self
     def authenticate!(email, password)
       user = User.find_for_authentication(email: email)

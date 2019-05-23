@@ -23,7 +23,7 @@ module GeneralConcern
     elsif month == '06'
       short_format ? 'Jun' : 'Junio'
     elsif month == '07'
-      short_format ? 'Jul' :  'Julio'
+      short_format ? 'Jul' : 'Julio'
     elsif month == '08'
       short_format ? 'Ago' : 'Agosto'
     elsif month == '09'

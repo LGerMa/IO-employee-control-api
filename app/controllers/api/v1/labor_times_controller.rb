@@ -27,6 +27,16 @@ class Api::V1::LaborTimesController < Api::V1::BaseController
     end
   end
 
+  def finish_labor_time
+    pending_labor_time = current_resource_owner.get_pending_labor_time
+    if pending_labor_time.nil?
+      render json: {error: "no pending labor time"}, status: 422
+    else
+      pending_labor_time.finish!
+      render status: 200
+    end
+  end
+
   private
 
   def set_labor_time

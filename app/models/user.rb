@@ -14,6 +14,10 @@ class User < ApplicationRecord
     pending_labor_times.nil? ? nil : pending_labor_times.first
   end
 
+  def got_pending_labor_time?
+    !self.get_pending_labor_time.nil?
+  end
+
   class << self
     def authenticate!(email, password)
       user = User.find_for_authentication(email: email)

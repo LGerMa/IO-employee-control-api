@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20190517135533) do
   enable_extension "pgcrypto"
 
   create_table "labor_times", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "start_date", default: "2019-05-25 12:53:41"
+    t.datetime "start_date", default: "2019-05-26 17:44:56"
     t.datetime "end_date"
     t.integer "labor_type", default: 0
     t.boolean "current_labor_time", default: true

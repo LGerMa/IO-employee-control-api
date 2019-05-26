@@ -33,7 +33,7 @@ class Api::V1::LaborTimesController < Api::V1::BaseController
       render json: {error: "no pending labor time"}, status: 422
     else
       pending_labor_time.finish!
-      render status: 200
+      render json: {result: "success"}, status: 200
     end
   end
 

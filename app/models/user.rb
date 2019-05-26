@@ -10,8 +10,8 @@ class User < ApplicationRecord
   enum role: {user: 0, admin: 1}
 
   def get_pending_labor_time
-    pending_labor_times = labor_times.where(end_date: nil).order(start_date: :desc)
-    pending_labor_times.nil? ? nil : pending_labor_times.first
+    pending_labor_times = labor_times.where(current_labor_time: true)
+    pending_labor_times.blank? ? nil : pending_labor_times.first
   end
 
   def got_pending_labor_time?

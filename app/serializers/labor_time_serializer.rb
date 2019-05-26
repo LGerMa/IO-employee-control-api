@@ -1,7 +1,4 @@
 class LaborTimeSerializer < ActiveModel::Serializer
-  attributes :id, :test
-
-  def test
-    'prueba2'
-  end
+  attributes :id, :start_date, :end_date, :user_id
+  #belongs_to :user
 end

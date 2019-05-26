@@ -4,6 +4,7 @@ class CreateLaborTimes < ActiveRecord::Migration[5.1]
       t.datetime :start_date, default: Time.now
       t.datetime :end_date, default: nil
       t.integer :labor_type, default: 0
+      t.boolean :current_labor_time, default: true
       t.references :user, foreign_key: true, type: :uuid
       t.timestamps
     end

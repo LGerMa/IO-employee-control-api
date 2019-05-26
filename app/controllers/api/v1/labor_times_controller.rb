@@ -4,36 +4,49 @@ class Api::V1::LaborTimesController < Api::V1::BaseController
   before_action :set_labor_time, only: [:show]
 
   def index
-    labor_times = current_resource_owner.labor_times
-    #render json: labor_times, adapter: :json
-    render json: labor_times
+    if current_resource_owner.admin?
+      labor_times = LaborTime.all.order_created_at_desc
+    else
+      labor_times = current_resource_owner.labor_times.order_created_at_desc
+    end
+    json_response(labor_times)
   end
 
   def show
-    render json: @labor_time
+    json_response(@labor_time)
   end
 
   def create
     pending_labor_time = current_resource_owner.get_pending_labor_time
     if !pending_labor_time.nil?
-      render json: {error: "pending labor time: #{get_date_formated(pending_labor_time.start_date.beginning_of_day, 0)}"}, status: 422
+      msg = {
+          error: "pending labor time: #{get_date_formated(pending_labor_time.start_date.beginning_of_day, 0)}"
+      }
+      json_response(msg, :unprocessable_entity)
     else
       labor_time = current_resource_owner.labor_times.new
+      labor_time.start_date = Time.now
       if labor_time.save
-        render json: labor_time, status: 201
+        json_response(labor_time, :created)
       else
-        render status: 422
+        msg = {
+            error: "cannot created labor time"
+        }
+        json_response(msg, :unprocessable_entity)
       end
     end
   end
 
   def finish_labor_time
     pending_labor_time = current_resource_owner.get_pending_labor_time
+    msg = {}
     if pending_labor_time.nil?
-      render json: {error: "no pending labor time"}, status: 422
+      msg[:error] = "no pending labor time"
+      json_response(msg, :unprocessable_entity)
     else
       pending_labor_time.finish!
-      render json: {result: "success"}, status: 200
+      msg[:result] = "success"
+      json_response(msg)
     end
   end
 
